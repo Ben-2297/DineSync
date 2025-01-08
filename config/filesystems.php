@@ -9,7 +9,7 @@ return [
     |
     | Here you may specify the default filesystem disk that should be used
     | by the framework. The "local" disk, as well as a variety of cloud
-    | based disks are available to your application for file storage.
+    | based disks are available to your application. Just store away!
     |
     */
 
@@ -20,11 +20,11 @@ return [
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
-    | Below you may configure as many filesystem disks as necessary, and you
-    | may even configure multiple disks for the same driver. Examples for
-    | most supported storage drivers are configured here for reference.
+    | Here you may configure as many filesystem "disks" as you wish, and you
+    | may even configure multiple disks of the same driver. Defaults have
+    | been set up for each driver as an example of the required values.
     |
-    | Supported drivers: "local", "ftp", "sftp", "s3"
+    | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
     */
 
@@ -32,8 +32,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
-            'serve' => true,
+            'root' => storage_path('app'),
             'throw' => false,
         ],
 
@@ -56,6 +55,21 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        
+        'photo' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/photo'),
+            'url' => env('APP_URL').'/storage/photo',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
+        'avatars' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/avatars'),
+            'url' => env('APP_URL').'/storage/avatars',
+            'visibility' => 'public',
+        ],
 
     ],
 
@@ -72,6 +86,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('storage/photo') => storage_path('app/public/photo'),
+        public_path('storage/avatars') => storage_path('app/public/avatars'),
     ],
 
 ];

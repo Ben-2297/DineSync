@@ -1,60 +1,74 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+@extends('template')
 
-        <x-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
-
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
+@section('content')
+<body>
+    <!-- Sign up form -->
+    <section class="signup">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Sign up</h2>
+                    <form method="POST" action="{{ route('register') }}" class="register-form" id="register-form">
+                        @csrf
+                        <div class="form-group">
+                            <label for="fname"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" class="form-control @error('fname') is-invalid @enderror" name="fname" id="fname" value="{{ old('fname') }}" required autocomplete="fname" autofocus placeholder="Your Firstname"/>
+                            
+                            @error('fname')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
-                    </x-label>
+                        <div class="form-group">
+                            <label for="lname"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" class="form-control @error('lname') is-invalid @enderror" name="lname" id="lname" value="{{ old('lname') }}" required autocomplete="lname" autofocus placeholder="Your Lastname"/>
+                            
+                            @error('lname')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><i class="zmdi zmdi-email"></i></label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Your Email"/>
+                        
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" required autocomplete="new-password" placeholder="Password"/>
+                        
+                            @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="zmdi zmdi-lock-outline"></i></label>
+                            <input type="password" class="form-control" name="password_confirmation" id="password-confirm" required autocomplete="new-password" placeholder="Repeat your password"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" onchange="document.getElementById('registerBtn').disabled = !this.checked;" name="agree-term" id="agree-term" class="agree-term" />
+                            <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="registerBtn" id="registerBtn" class="form-submit" value="Register" disabled/>
+                        </div>
+                    </form>
                 </div>
-            @endif
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ms-4">
-                    {{ __('Register') }}
-                </x-button>
+                <div class="signup-image">
+                    <figure><img src="{{ asset('authentication/images/signup-image.jpg') }}" alt="sing up image"></figure>
+                    <a href="{{ route('login') }}" class="signup-image-link">I am already member</a>
+                </div>
             </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+        </div>
+    </section>
+</body>
+@endsection

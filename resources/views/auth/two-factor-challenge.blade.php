@@ -1,58 +1,71 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+@extends('template')
 
-        <div x-data="{ recovery: false }">
-            <div class="mb-4 text-sm text-gray-600" x-show="! recovery">
-                {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
+@section('content')
+<body>
+    <!-- Sing in  Form -->
+    <section class="sign-in">
+        <div class="container">
+            <div class="otp">
+                <div class="signin-content" id="TOTP">
+                    <div class="signin-image">
+                        <figure><img src="{{ asset('authentication/images/2fa.png') }}" alt="sing up image"></figure>
+                        <a href="#recovery" type="button" class="signup-image-link" onclick="changeStyle()">Having a problem use recovery code!</a>
+                    </div>
+        
+                    <div class="signin-form">
+                        <h2 class="form-title">Time-Based OTP Code</h2>
+                        @error('status')
+                            <span class="invalid-feedback" role="alert">
+                                {{ session('status') }}
+                            </span> 
+                        @enderror
+                        <p>Please enter your authentication code to Sign in</p>
+                        <form method="POST" action="{{ url('/two-factor-challenge') }}">
+                            @csrf
+                            <input type="text" name="code" class="form-control @error('status') is-invalid @enderror" required autocomplete="code" placeholder="CODE"/>
+                            <input type="submit" name="submit" id="submit" class="form-submit mb-3" value="Code"/>
+                        </form>
+                    </div>
+                </div>
+        
+                <div class="signup-content" id="recovery" style="display: none;">
+                    <div class="signup-form">
+                        <h2 class="form-title">Recovery Code</h2>
+                        @error('status')
+                            <span class="invalid-feedback" role="alert">
+                                {{ session('status') }}
+                            </span> 
+                        @enderror
+                        <p>Please enter your recovery</p>
+                        <form method="POST" action="{{ url('/two-factor-challenge') }}">
+                            @csrf
+                            <input type="text" name="recovery_code" class="form-control @error('status') is-invalid @enderror" required autocomplete="code" placeholder="CODE"/>
+                            <input type="submit" name="submit" id="submit" class="form-submit mb-3" value="Code"/>
+                        </form>
+                    </div>
+                    
+                    <div class="signup-image">
+                        <figure><img src="{{ asset('authentication/images/2fa-recovery.png') }}" alt="sing up image"></figure>
+                        <a href="#TOTP" type="button" class="signup-image-link" onclick="changeStyles()"><-- Time-Based OTP!</a>
+                    </div>
+                </div>
             </div>
-
-            <div class="mb-4 text-sm text-gray-600" x-cloak x-show="recovery">
-                {{ __('Please confirm access to your account by entering one of your emergency recovery codes.') }}
-            </div>
-
-            <x-validation-errors class="mb-4" />
-
-            <form method="POST" action="{{ route('two-factor.login') }}">
-                @csrf
-
-                <div class="mt-4" x-show="! recovery">
-                    <x-label for="code" value="{{ __('Code') }}" />
-                    <x-input id="code" class="block mt-1 w-full" type="text" inputmode="numeric" name="code" autofocus x-ref="code" autocomplete="one-time-code" />
-                </div>
-
-                <div class="mt-4" x-cloak x-show="recovery">
-                    <x-label for="recovery_code" value="{{ __('Recovery Code') }}" />
-                    <x-input id="recovery_code" class="block mt-1 w-full" type="text" name="recovery_code" x-ref="recovery_code" autocomplete="one-time-code" />
-                </div>
-
-                <div class="flex items-center justify-end mt-4">
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                                    x-show="! recovery"
-                                    x-on:click="
-                                        recovery = true;
-                                        $nextTick(() => { $refs.recovery_code.focus() })
-                                    ">
-                        {{ __('Use a recovery code') }}
-                    </button>
-
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                                    x-cloak
-                                    x-show="recovery"
-                                    x-on:click="
-                                        recovery = false;
-                                        $nextTick(() => { $refs.code.focus() })
-                                    ">
-                        {{ __('Use an authentication code') }}
-                    </button>
-
-                    <x-button class="ms-4">
-                        {{ __('Log in') }}
-                    </x-button>
-                </div>
-            </form>
         </div>
-    </x-authentication-card>
-</x-guest-layout>
+    </section>
+    <script>
+        function changeStyle(){
+            var element = document.getElementById("TOTP");
+            element.style.display = "none";
+            var element = document.getElementById("recovery");
+            element.style.display = "";
+        }
+
+        function changeStyles(){
+            var element = document.getElementById("TOTP");
+            element.style.display = "";
+            var element = document.getElementById("recovery");
+            element.style.display = "none";
+        }
+    </script>
+</body>
+@endsection

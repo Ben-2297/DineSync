@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
+body {
+	color: #0d031e;
+	background: #ffffff;
+	font-family: 'Balsamiq Sans', 'cursive';
+}
+
+.back a {
+	position: absolute;
+	margin-top: -20px;
+	margin-left: -30px;
+	font-size: 70px;
+	text-decoration: none;
+	background: #fff;
+	border-radius: 50%;
+}
+
+.shadow {
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.profile-tab-nav {
+	min-width: 250px;
+}
+
+.tab-content {
+	flex: 1;
+}
+
+.form-group {
+	margin-bottom: 1.5rem;
+}
+
+.nav-pills a.nav-link {
+	padding: 15px 20px;
+	border-bottom: 1px solid #ddd;
+	border-radius: 0;
+	color: #0d031e;
+}
+
+.nav-pills a.nav-link i {
+	width: 20px;
+}
+
+.img-circle img {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;;
+}
+
+.upload{
+	width: 100px;
+	position: relative;
+	margin: auto;
+  }
+  
+  .upload img{
+	border-radius: 50%;
+	border: 6px solid #eaeaea;
+  }
+  
+  .upload .round{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background: #00B4FF;
+	width: 32px;
+	height: 32px;
+	line-height: 33px;
+	text-align: center;
+	border-radius: 50%;
+	overflow: hidden;
+  }
+  
+  .upload .round input[type = "file"]{
+	position: absolute;
+	transform: scale(2);
+	opacity: 0;
+  }
+  
+  input[type=file]::-webkit-file-upload-button{
+	  cursor: pointer;
+  }
